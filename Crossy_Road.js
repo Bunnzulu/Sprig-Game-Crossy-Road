@@ -10,6 +10,7 @@ https://sprig.hackclub.com/gallery/getting_started
 
 const player = "p"
 const car = "c"
+const Ocar = "o"
 const Yellow = "y"
 const White = "W"
 const Black = "B"
@@ -43,6 +44,23 @@ setLegend(
 0003333333333000
 0033333333333300
 0033333333333300
+0000LL0000LL0000
+0000LL0000LL0000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000` ],
+  [Ocar, bitmap`
+0000000000000000
+0000000000000000
+0000000440000000
+0000044444400000
+0000447777440000
+0000447777440000
+0004444444444000
+0044444444444400
+0044444444444400
 0000LL0000LL0000
 0000LL0000LL0000
 0000000000000000
@@ -126,12 +144,53 @@ setSolids([Wall,car])
 setMap(map`
 wyyyyyyw
 wBcBBBBw
-wBBBcBBw
+wBBBoBBw
 wyyyyyyw
 wBBcBBBw
 wBBBBBBw
 wyyypyyw`)
 
+setPushables({
+  [ player ]: []
+})
+// setInterval
+onInput("s", () => {
+  getFirst(player).y += 1
+})
+onInput("w", () => {
+  getFirst(player).y -= 1
+})
+onInput("a", () => {
+  getFirst(player).x -= 1
+})
+onInput("d", () => {
+  getFirst(player).x += 1
+})
 
+
+function Move_RedCars(Steps) {
+  for (let i = 0; i < getAll(car).length; i++) {
+    dcar = getAll(car)[i]
+    dcar.x += Steps
+    if (dcar.x >= 6) {
+      dcar.x = 1
+    }
+    }}
+function Move_GreenCar(Steps) {
+    getFirst(Ocar).x -= Steps
+    if (getFirst(Ocar).x === 1) {
+      getFirst(Ocar).x = 6
+    };
+};
 
     
+afterInput(() => {
+   if (tilesWith(car,player).length > 0) {
+     getFirst(player).x = 3
+     getFirst(player).y = 6
+   };
+  let gameLoop = setInterval(() => {
+    Move_RedCars(1);
+    Move_GreenCar(1);
+  }, 1000);
+})
