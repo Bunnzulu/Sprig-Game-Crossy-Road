@@ -15,6 +15,7 @@ const Yellow = "y"
 const White = "W"
 const Black = "B"
 const Wall = "w"
+var gameLoop;
 
 setLegend(
   [ player, bitmap`
@@ -156,28 +157,41 @@ setPushables({
 // setInterval
 onInput("s", () => {
   getFirst(player).y += 1
+  Collision()
 })
 onInput("w", () => {
   getFirst(player).y -= 1
+  Collision()
 })
 onInput("a", () => {
   getFirst(player).x -= 1
+  Collision()
 })
 onInput("d", () => {
   getFirst(player).x += 1
+  Collision()
 })
+
+function Collision() {
+  if (tilesWith(car,player).length > 0 || tilesWith(Ocar,player).length > 0) {
+     getFirst(player).x = 3
+     getFirst(player).y = 6
+   };
+}
 
 
 function Move_RedCars(Steps) {
   for (let i = 0; i < getAll(car).length; i++) {
     dcar = getAll(car)[i]
     dcar.x += Steps
+    Collision()
     if (dcar.x >= 6) {
       dcar.x = 1
     }
     }}
 function Move_GreenCar(Steps) {
     getFirst(Ocar).x -= Steps
+    Collision()
     if (getFirst(Ocar).x === 1) {
       getFirst(Ocar).x = 6
     };
@@ -185,12 +199,12 @@ function Move_GreenCar(Steps) {
 
     
 afterInput(() => {
-   if (tilesWith(car,player).length > 0) {
-     getFirst(player).x = 3
-     getFirst(player).y = 6
-   };
-  let gameLoop = setInterval(() => {
+  Collision()
+  if (gameLoop === undefined) {
+  gameLoop = setInterval(() => {
     Move_RedCars(1);
     Move_GreenCar(1);
+    Collision();
   }, 1000);
+  }
 })
