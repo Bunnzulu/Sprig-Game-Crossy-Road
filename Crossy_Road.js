@@ -132,47 +132,6 @@ wBBcBBBw
 wBBBBBBw
 wyyypyyw`)
 
-setPushables({
-  [ player ]: []
-})
-// setInterval
-onInput("s", () => {
-  getFirst(player).y += 1
-})
-onInput("w", () => {
-  getFirst(player).y -= 1
-})
-onInput("a", () => {
-  getFirst(player).x -= 1
-})
-onInput("d", () => {
-  getFirst(player).x += 1
-})
 
-for (let i = 0; i < getAll(car).length; i++) {
-  getAll(car)[i].dx = -1
-};
-
-function Move_Cars(Steps) {
-  for (let i = 0; i < getAll(car).length; i++) {
-    dcar = getAll(car)[i]
-    if (dcar.dx === -1) {
-      dcar.x -= Steps; // Left
-    } else if (dcar.dx === 1) {
-      dcar.x += Steps; //Right
-    }
-    if (tilesWith(car,Wall)) {
-      dcar.dx *= -1;
-    }
-  }
-};
 
     
-afterInput(() => {
-   if (tilesWith(car,player).length > 0) {
-     getFirst(player).x = 3
-     getFirst(player).y = 6
-   };
-  setInterval(() => Move_Cars(5), 10);
-
-})
