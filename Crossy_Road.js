@@ -339,20 +339,35 @@ function SpawnCars(spawnpos,cars) {
 function Move_RedCars(Steps) {
   for (let i = 0; i < getAll(RedCar).length; i++) {
     dcar = getAll(RedCar)[i]
+    console.log(dcar)
     dcar.x += Steps
     Collision()
     if (dcar.x >= 6) {
-      dcar.x = 1
+      if (Math.floor(Math.random() * 2) == 1){
+      SpawnCars([6,dcar.y],[GreenCar])
+      } else {
+        SpawnCars([1,dcar.y],[RedCar])
+      }
+      dcar.remove()
     }
   }
 }
 
+
 function Move_GreenCar(Steps) {
-  getFirst(GreenCar).x -= Steps
-  Collision()
-  if (getFirst(GreenCar).x === 1) {
-    getFirst(GreenCar).x = 6
-  };
+  for (let i = 0; i < getAll(GreenCar).length; i++) {
+    dcar = getAll(GreenCar)[i]
+    dcar.x -= Steps
+    Collision()
+    if (dcar.x <= 1) {
+      if (Math.floor(Math.random() * 2) == 1){
+      SpawnCars([6,dcar.y],[GreenCar])
+      } else {
+        SpawnCars([1,dcar.y],[RedCar])
+      }
+      dcar.remove()
+    }
+  }
 };
 
 
