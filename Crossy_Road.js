@@ -341,7 +341,11 @@ function Player_Spawn(pos) {
 
 function Collision() {
   if (tilesWith(RedCar, player).length > 0 || tilesWith(GreenCar, player).length > 0) {
-    Player_Spawn([3,6])
+    if (StageIndex < 2){ 
+      Player_Spawn([3,6])
+    } else {
+      Player_Spawn([3,13])
+    }
     Score = 0
     Main_Loop(1000)
     clearText()
@@ -400,16 +404,18 @@ function GettingPoints() {
   if (getFirst(player).y === 0) {
     if (StageIndex < 2){ 
       Player_Spawn([3,6])
+    } else {
+      Player_Spawn([3,13])
     }
     Score++
     if (Score === 5) {
-      Main_Loop(500)
+      Main_Loop(750)
     }
     if (Score === 10) {
-      Main_Loop(250)
+      Main_Loop(500)
     }
     if (Score === 20) {
-      Main_Loop(100)
+      Main_Loop(300)
     }
     if (Score === 25 && StageIndex < 2) {
       setMap(ExtraGame)
