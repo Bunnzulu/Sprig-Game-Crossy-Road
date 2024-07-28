@@ -283,6 +283,22 @@ wBBcBBBw
 wBBBBBBw
 wyyyypyw
 wyyyyyyw`
+ExtraGame = map`
+wyyyyyyw
+wyyyyyyw
+wBBaBBBw
+wBBBBcBw
+wBPBBBBw
+wBBBBgBw
+wBBaBBBw
+wyyyyyyw
+wBBBaBBw
+wBPBBBBw
+wyyyyyyw
+wBBaBBBw
+wBBBBBBw
+wyyyypyw
+wyyyyyyw`
 StageIndex = 1
 
 setMap(StartScreen)
@@ -318,14 +334,14 @@ onInput("i", () => {
   }
 })
 
-function Player_Spawn() {
-  getFirst(player).x = 3
-  getFirst(player).y = 6
+function Player_Spawn(pos) {
+  getFirst(player).x = pos[0]
+  getFirst(player).y = pos[1]
 }
 
 function Collision() {
   if (tilesWith(RedCar, player).length > 0 || tilesWith(GreenCar, player).length > 0) {
-    Player_Spawn()
+    Player_Spawn([3,6])
     Score = 0
     Main_Loop(1000)
     clearText()
@@ -382,7 +398,9 @@ function Main_Loop(time) {
 
 function GettingPoints() {
   if (getFirst(player).y === 0) {
-    Player_Spawn()
+    if (StageIndex < 2){ 
+      Player_Spawn([3,6])
+    }
     Score++
     if (Score === 5) {
       Main_Loop(500)
@@ -393,13 +411,19 @@ function GettingPoints() {
     if (Score === 20) {
       Main_Loop(100)
     }
+    if (Score === 25 && StageIndex < 2) {
+      setMap(ExtraGame)
+      StageIndex = 2
+      Player_Spawn([3,13])
+    }
     if (Score > HighScore) {
       HighScore = Score
     }
     clearText()
-    addText(`Score:${Score}`, options = { x: 1, y: 0, color: color`2` })
-    addText(`HighScore:${HighScore}`, options = { x: 1, y: 12, color: color`2` })
-
+    if (StageIndex < 2){
+      addText(`Score:${Score}`, options = { x: 1, y: 0, color: color`2` })
+      addText(`HighScore:${HighScore}`, options = { x: 1, y: 12, color: color`2` })
+    }
   }
 }
 
