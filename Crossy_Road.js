@@ -353,7 +353,7 @@ function Collision() {
 }
 
 function SpawnCars(spawnpos,cars) {
-  addSprite(spawnpos[0],spawnpos[1],cars[Math.floor(Math.random() * getAll(cars).length)])
+  addSprite(spawnpos[0],spawnpos[1],cars[Math.floor(Math.random() * cars.length)])
 }
 
 function Move_RedCars(Steps) {
@@ -366,13 +366,29 @@ function Move_RedCars(Steps) {
       if (Math.floor(Math.random() * 2) == 1){
       SpawnCars([6,dcar.y],[GreenCar])
       } else {
-        SpawnCars([1,dcar.y],[RedCar])
+        SpawnCars([1,dcar.y],[RedCar,Bluecar])
       }
       dcar.remove()
     }
   }
 }
 
+function Move_BlueCars(Steps) {
+  for (let i = 0; i < getAll(Bluecar).length; i++) {
+    dcar = getAll(Bluecar)[i]
+    console.log(dcar)
+    dcar.x += Steps
+    Collision()
+    if (dcar.x >= 6) {
+      if (Math.floor(Math.random() * 2) == 1){
+      SpawnCars([6,dcar.y],[GreenCar])
+      } else {
+        SpawnCars([1,dcar.y],[RedCar,Bluecar])
+      }
+      dcar.remove()
+    }
+  }
+}
 
 function Move_GreenCar(Steps) {
   for (let i = 0; i < getAll(GreenCar).length; i++) {
@@ -383,7 +399,7 @@ function Move_GreenCar(Steps) {
       if (Math.floor(Math.random() * 2) == 1){
       SpawnCars([6,dcar.y],[GreenCar])
       } else {
-        SpawnCars([1,dcar.y],[RedCar])
+        SpawnCars([1,dcar.y],[RedCar,Bluecar])
       }
       dcar.remove()
     }
@@ -396,6 +412,7 @@ function Main_Loop(time) {
   gameLoop = setInterval(() => {
     Move_RedCars(1);
     Move_GreenCar(1);
+    Move_BlueCars(2);
     Collision();
   }, time);
 }
@@ -417,7 +434,7 @@ function GettingPoints() {
     if (Score === 20) {
       Main_Loop(300)
     }
-    if (Score === 25 && StageIndex < 2) {
+    if (Score === 2 && StageIndex < 2) {
       setMap(ExtraGame)
       StageIndex = 2
       Player_Spawn([3,13])
