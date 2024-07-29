@@ -356,18 +356,27 @@ function SpawnCars(spawnpos,cars) {
   addSprite(spawnpos[0],spawnpos[1],cars[Math.floor(Math.random() * cars.length)])
 }
 
+function RandomCars(){
+  if (Math.floor(Math.random() * 3) == 2){
+      SpawnCars([6,dcar.y],[GreenCar])
+      } else if (Math.floor(Math.random() * 3) == 1){
+        SpawnCars([1,dcar.y],[RedCar,Bluecar])
+      } else {
+        if (Math.floor(Math.random() * 2) == 1){
+          SpawnCars([2,dcar.y],[PurpleCar])
+        } else {
+          SpawnCars([5,dcar.y],[PurpleCar])
+        }
+      }
+}
+
 function Move_RedCars(Steps) {
   for (let i = 0; i < getAll(RedCar).length; i++) {
     dcar = getAll(RedCar)[i]
-    console.log(dcar)
     dcar.x += Steps
     Collision()
     if (dcar.x >= 6) {
-      if (Math.floor(Math.random() * 2) == 1){
-      SpawnCars([6,dcar.y],[GreenCar])
-      } else {
-        SpawnCars([1,dcar.y],[RedCar,Bluecar])
-      }
+      RandomCars()
       dcar.remove()
     }
   }
@@ -376,15 +385,10 @@ function Move_RedCars(Steps) {
 function Move_BlueCars(Steps) {
   for (let i = 0; i < getAll(Bluecar).length; i++) {
     dcar = getAll(Bluecar)[i]
-    console.log(dcar)
     dcar.x += Steps
     Collision()
     if (dcar.x >= 6) {
-      if (Math.floor(Math.random() * 2) == 1){
-      SpawnCars([6,dcar.y],[GreenCar])
-      } else {
-        SpawnCars([1,dcar.y],[RedCar,Bluecar])
-      }
+      RandomCars()
       dcar.remove()
     }
   }
@@ -396,15 +400,23 @@ function Move_GreenCar(Steps) {
     dcar.x -= Steps
     Collision()
     if (dcar.x <= 1) {
-      if (Math.floor(Math.random() * 2) == 1){
-      SpawnCars([6,dcar.y],[GreenCar])
-      } else {
-        SpawnCars([1,dcar.y],[RedCar,Bluecar])
-      }
+      RandomCars()
       dcar.remove()
     }
   }
 };
+
+function Move_PurpleCars(Steps) {
+  for (let i = 0; i < getAll(PurpleCar).length; i++) {
+    dcar = getAll(PurpleCar)[i]
+    dcar.x += Steps
+    Collision()
+    if (dcar.x >= 6 || dcar.x <= 1) {
+      RandomCars()
+      dcar.remove()
+    }
+  }
+}
 
 
 function Main_Loop(time) {
