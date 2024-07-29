@@ -346,6 +346,15 @@ function Collision() {
     } else {
       Player_Spawn([3,13])
     }
+} }
+
+function Collision2(){
+  if (tilesWith(Bluecar, player).length > 0 || tilesWith(PurpleCar, player).length > 0) {
+    if (StageIndex < 2){ 
+      Player_Spawn([3,6])
+    } else {
+      Player_Spawn([3,13])
+    }
     Score = 0
     Main_Loop(1000)
     clearText()
@@ -386,7 +395,7 @@ function Move_BlueCars(Steps) {
   for (let i = 0; i < getAll(Bluecar).length; i++) {
     dcar = getAll(Bluecar)[i]
     dcar.x += Steps
-    Collision()
+    Collision2()
     if (dcar.x >= 6) {
       RandomCars()
       dcar.remove()
@@ -409,8 +418,12 @@ function Move_GreenCar(Steps) {
 function Move_PurpleCars(Steps) {
   for (let i = 0; i < getAll(PurpleCar).length; i++) {
     dcar = getAll(PurpleCar)[i]
-    dcar.x += Steps
-    Collision()
+    if (Math.floor(Math.random() * 2) == 1){
+      dcar.x += Steps
+    } else {
+      dcar.x -= Steps
+    }
+    Collision2()
     if (dcar.x >= 6 || dcar.x <= 1) {
       RandomCars()
       dcar.remove()
@@ -425,7 +438,9 @@ function Main_Loop(time) {
     Move_RedCars(1);
     Move_GreenCar(1);
     Move_BlueCars(2);
+    Move_PurpleCars(Math.floor(Math.random() * 3));
     Collision();
+    Collision2();
   }, time);
 }
 
@@ -446,7 +461,7 @@ function GettingPoints() {
     if (Score === 20) {
       Main_Loop(300)
     }
-    if (Score === 2 && StageIndex < 2) {
+    if (Score === 25 && StageIndex < 2) {
       setMap(ExtraGame)
       StageIndex = 2
       Player_Spawn([3,13])
@@ -458,11 +473,15 @@ function GettingPoints() {
     if (StageIndex < 2){
       addText(`Score:${Score}`, options = { x: 1, y: 0, color: color`2` })
       addText(`HighScore:${HighScore}`, options = { x: 1, y: 12, color: color`2` })
+    } else {
+      addText(`Score:${Score}`, options = { x: 1, y: 0, color: color`2` })
+      addText(`HighScore:${HighScore}`, options = { x: 1, y: 13, color: color`2` })
     }
   }
 }
 
 afterInput(() => {
   Collision();
+  Collision2();
   GettingPoints();
 })
